@@ -1,0 +1,28 @@
+{
+  "name": "simon/CBI_Parser",
+  "description": "description_text",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "author's name",
+      "email": "email@example.com"
+    }
+  ],
+
+  "require": {
+    "kaitai-io/kaitai_struct_php_runtime": "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url":  "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
+    }
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "CBI\\txtParser\\": "/..parse"
+    }
+  }
+}
