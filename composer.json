@@ -25,9 +25,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "cbi\\parse\\": "../src/parse",
-      "cbi\\database\\": "../src/database",
-      "cbi\\public\\": "../pub"
+      "cbi\\": "./src"
     }
   }
 }

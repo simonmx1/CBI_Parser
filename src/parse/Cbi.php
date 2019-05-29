@@ -5,7 +5,7 @@ namespace cbi\parse;
 
 class Cbi extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \Kaitai\Struct\Struct $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \Kaitai\Struct\Struct $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -19,7 +19,7 @@ class Cbi extends \Kaitai\Struct\Struct
         while (!$this->_io->isEof()) {
             $this->_m__raw_record[] = $this->_io->readBytes(122);
             $_io__raw_record = new \Kaitai\Struct\Stream(end($this->_m__raw_record));
-            $this->_m_record[] = new \CBI\txtParser\Cbi\Record($_io__raw_record, $this, $this->_root);
+            $this->_m_record[] = new \cbi\parse\Record($_io__raw_record, $this, $this->_root);
             $i++;
         }
     }
@@ -38,11 +38,11 @@ class Cbi extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class BonificiEstero1 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -117,11 +117,11 @@ class BonificiEstero1 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class PrimoRecord63CausaleCbi extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -161,11 +161,11 @@ class PrimoRecord63CausaleCbi extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class PrimoRecord63 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -191,11 +191,11 @@ class PrimoRecord63 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class RecordRi1 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -214,11 +214,11 @@ class RecordRi1 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class Movimento extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -314,11 +314,11 @@ class Movimento extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class RecordRi2 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -344,11 +344,11 @@ class RecordRi2 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class SecondoRecord63 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -381,11 +381,11 @@ class SecondoRecord63 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class InfMovimento extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -398,34 +398,34 @@ class InfMovimento extends \Kaitai\Struct\Struct
         $this->_m_flagStruttura = \Kaitai\Struct\Stream::bytesToStr($this->_io->readBytes(3), "utf-8");
         switch ($this->flagStruttura()) {
             case "ZZ2":
-                $this->_m_content = new \CBI\txtParser\Cbi\BonificiEstero2($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\BonificiEstero2($this->_io, $this, $this->_root);
                 break;
             case "ZZ3":
-                $this->_m_content = new \CBI\txtParser\Cbi\BonificiEstero3($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\BonificiEstero3($this->_io, $this, $this->_root);
                 break;
             case "YYY":
-                $this->_m_content = new \CBI\txtParser\Cbi\PrimoRecord63CausaleCbi($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\PrimoRecord63CausaleCbi($this->_io, $this, $this->_root);
                 break;
             case "RI2":
-                $this->_m_content = new \CBI\txtParser\Cbi\RecordRi2($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\RecordRi2($this->_io, $this, $this->_root);
                 break;
             case "ID1":
-                $this->_m_content = new \CBI\txtParser\Cbi\RecordId1($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\RecordId1($this->_io, $this, $this->_root);
                 break;
             case "ZZ1":
-                $this->_m_content = new \CBI\txtParser\Cbi\BonificiEstero1($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\BonificiEstero1($this->_io, $this, $this->_root);
                 break;
             case "RI1":
-                $this->_m_content = new \CBI\txtParser\Cbi\RecordRi1($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\RecordRi1($this->_io, $this, $this->_root);
                 break;
             case "YY2":
-                $this->_m_content = new \CBI\txtParser\Cbi\SecondoRecord63($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\SecondoRecord63($this->_io, $this, $this->_root);
                 break;
             case "KKK":
-                $this->_m_content = new \CBI\txtParser\Cbi\PrimoRecord63($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\PrimoRecord63($this->_io, $this, $this->_root);
                 break;
             default:
-                $this->_m_content = new \CBI\txtParser\Cbi\RecordGen($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\RecordGen($this->_io, $this, $this->_root);
                 break;
         }
     }
@@ -456,11 +456,11 @@ class InfMovimento extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class BonificiEstero2 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -479,11 +479,11 @@ class BonificiEstero2 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class RecordCoda extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -565,11 +565,11 @@ class RecordCoda extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class RecordGen extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -593,11 +593,11 @@ class RecordGen extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class BonificiEstero3 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -623,11 +623,11 @@ class BonificiEstero3 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class SaldoLiquido extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\LiquiditaFuture $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\LiquiditaFuture $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -660,11 +660,11 @@ class SaldoLiquido extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class RecordId1 extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\InfMovimento $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\InfMovimento $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -697,11 +697,11 @@ class RecordId1 extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class SaldoFinale extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -776,11 +776,11 @@ class SaldoFinale extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class LiquiditaFuture extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -789,11 +789,11 @@ class LiquiditaFuture extends \Kaitai\Struct\Struct
     private function _read()
     {
         $this->_m_numeroProgressivo = $this->_io->readBytes(7);
-        $this->_m_saldo1 = new \CBI\txtParser\Cbi\SaldoLiquido($this->_io, $this, $this->_root);
-        $this->_m_saldo2 = new \CBI\txtParser\Cbi\SaldoLiquido($this->_io, $this, $this->_root);
-        $this->_m_saldo3 = new \CBI\txtParser\Cbi\SaldoLiquido($this->_io, $this, $this->_root);
-        $this->_m_saldo4 = new \CBI\txtParser\Cbi\SaldoLiquido($this->_io, $this, $this->_root);
-        $this->_m_saldo5 = new \CBI\txtParser\Cbi\SaldoLiquido($this->_io, $this, $this->_root);
+        $this->_m_saldo1 = new \cbi\parse\SaldoLiquido($this->_io, $this, $this->_root);
+        $this->_m_saldo2 = new \cbi\parse\SaldoLiquido($this->_io, $this, $this->_root);
+        $this->_m_saldo3 = new \cbi\parse\SaldoLiquido($this->_io, $this, $this->_root);
+        $this->_m_saldo4 = new \cbi\parse\SaldoLiquido($this->_io, $this, $this->_root);
+        $this->_m_saldo5 = new \cbi\parse\SaldoLiquido($this->_io, $this, $this->_root);
     }
 
     protected $_m_numeroProgressivo;
@@ -834,11 +834,11 @@ class LiquiditaFuture extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class Record extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Cbi $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -850,28 +850,28 @@ class Record extends \Kaitai\Struct\Struct
         $this->_m_tipoRecord = \Kaitai\Struct\Stream::bytesToStr($this->_io->readBytes(2), "utf-8");
         switch ($this->tipoRecord()) {
             case "64":
-                $this->_m_content = new \CBI\txtParser\Cbi\SaldoFinale($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\SaldoFinale($this->_io, $this, $this->_root);
                 break;
             case "EF":
-                $this->_m_content = new \CBI\txtParser\Cbi\RecordCoda($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\RecordCoda($this->_io, $this, $this->_root);
                 break;
             case "65":
-                $this->_m_content = new \CBI\txtParser\Cbi\LiquiditaFuture($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\LiquiditaFuture($this->_io, $this, $this->_root);
                 break;
             case "RH":
-                $this->_m_content = new \CBI\txtParser\Cbi\RecordTesta($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\RecordTesta($this->_io, $this, $this->_root);
                 break;
             case "61":
-                $this->_m_content = new \CBI\txtParser\Cbi\SaldoInziale($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\SaldoInziale($this->_io, $this, $this->_root);
                 break;
             case "62":
-                $this->_m_content = new \CBI\txtParser\Cbi\Movimento($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\Movimento($this->_io, $this, $this->_root);
                 break;
             case "63":
-                $this->_m_content = new \CBI\txtParser\Cbi\InfMovimento($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\InfMovimento($this->_io, $this, $this->_root);
                 break;
             default:
-                $this->_m_content = new \CBI\txtParser\Cbi\Undefined($this->_io, $this, $this->_root);
+                $this->_m_content = new \cbi\parse\Undefined($this->_io, $this, $this->_root);
                 break;
         }
     }
@@ -896,11 +896,11 @@ class Record extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class Undefined extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -911,11 +911,11 @@ class Undefined extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class SaldoInziale extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
@@ -1046,11 +1046,11 @@ class SaldoInziale extends \Kaitai\Struct\Struct
     }
 }
 
-namespace CBI\txtParser\Cbi;
+namespace cbi\parse;
 
 class RecordTesta extends \Kaitai\Struct\Struct
 {
-    public function __construct(\Kaitai\Struct\Stream $_io, \CBI\txtParser\Cbi\Record $_parent = null, \CBI\txtParser\Cbi $_root = null)
+    public function __construct(\Kaitai\Struct\Stream $_io, \cbi\parse\Record $_parent = null, \cbi\parse\Cbi $_root = null)
     {
         parent::__construct($_io, $_parent, $_root);
         $this->_read();
