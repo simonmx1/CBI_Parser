@@ -22,7 +22,7 @@
 
   "autoload": {
     "psr-4": {
-      "CBI\\txtParser\\": "/..parse"
+      "CBI\\txtParser\\": "/../parse"
     }
   }
 }
