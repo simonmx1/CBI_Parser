@@ -1,5 +1,6 @@
 {
-  "name": "simon/CBI_Parser",
+  "name": "simon/cbi_parser",
+  "type": "project",
   "description": "description_text",
   "minimum-stability": "dev",
   "license": "proprietary",
@@ -9,20 +10,24 @@
       "email": "email@example.com"
     }
   ],
-
   "require": {
-    "kaitai-io/kaitai_struct_php_runtime": "dev-master"
+    "kaitai-io/kaitai_struct_php_runtime": "dev-master",
+    "ext-pdo": "*",
+    "guzzlehttp/guzzle": "^6.3",
+    "phpmd/phpmd": "@stable",
+    "squizlabs/php_codesniffer": "3.*"
   },
   "repositories": [
     {
       "type": "vcs",
-      "url":  "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
+      "url": "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
     }
   ],
-
   "autoload": {
     "psr-4": {
-      "CBI\\txtParser\\": "/../parse"
+      "cbi\\parse\\": "../src/parse",
+      "cbi\\database\\": "../src/database",
+      "cbi\\public\\": "../pub"
     }
   }
 }
