@@ -12,7 +12,7 @@ class Parser
     function __construct($server, $database, $user, $password, $filename)
     {
         try {
-            $this->db = (new Database($server, $database, $user, $password, "INSERT INTO cbi (movements, dateOfMovement) VALUES (?, ?)"));
+            $this->db = (new Database($server, $database, $user, $password, "INSERT INTO cbi (m_movements, m_date) VALUES (?, ?)"));
         } catch (Exception $e) {
         }
 

@@ -19,8 +19,7 @@ class Database
             $this->conn->query("SET NAMES utf8");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->stmt = $this->conn->prepare($stmt);
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             printf($e);
         }
 
@@ -35,7 +34,6 @@ class Database
     function uploadToDatabase($upload)
     {
         $this->stmt->execute($upload);
-
     }
 
 }
