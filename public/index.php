@@ -1,21 +1,43 @@
 <?php
 
-namespace cbi\pub;
+/**
+ * index.php
+ *
+ * Main php-file to start the CBI-Parse-application
+ *
+ * @package    public
+ * @author     Simon Muscatello
+ */
 
-require_once __DIR__ . "/../vendor/autoload.php";
+namespace cbi\parse;
 
-use \cbi\parse\Parser;
+use cbi\database\Database;
 use Exception;
 
-$server = '127.0.0.1';
-$database = 'cbi_movements';
-$user = 'root';
-$password = '';
-$file = "/home/simon/Desktop/CBI/records/06045_06045E8330_REND-CC_20190527_35109_p2_INFO.T191480305555.MOV.txt";
-$testfile = "/home/simon/Desktop/test.txt";
+class Parser {
 
-try {
-    $p = new Parser($server, $database, $user, $password, $file);
-} catch (Exception $e) {
+    private $db;
+
+    function __construct($server, $database, $user, $password, $filename) {
+
+        try {
+            $this->db = new Database($server, $database, $user, $password);
+        } catch (Exception $e) {
+        }
+
+        $file = Cbi::fromFile($filename);
+
+        ///$this->db->uploadCbi(array(serialize($file), "2019-05-27"));
+
+        //var_dump($file);
+        var_dump($file->record()[4]->content()->saldoContabile());
+        var_dump($file->record()[4]->_root->_raw_record()[4]);
+        //printf("mittente: " . $file->__get("record")[0]->__get("content")->__get("mittente") . "\n");
+        //printf("ricevente: " . $file->__get("record")[0]->__get("content")->__get("ricevente") . "\n");
+        //var_dump($file->__get("record")[12]->__get("content")->__get("numeroProgressivo") . "\n");
+
+        printf(var_dump($file->__get("_m_record")));
+
+    }
 
 }

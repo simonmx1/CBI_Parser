@@ -1,12 +1,20 @@
 <?php
 
+/**
+ * Database.php
+ *
+ * Database connection and INSERT functions
+ *
+ * @package    src/database
+ * @author     Simon Muscatello
+ */
+
 namespace cbi\database;
 
 use PDO;
 use PDOException;
 
-class Database
-{
+class Database {
 
     private $conn;
     private $cbi_stmt;
@@ -17,8 +25,7 @@ class Database
     private $saldo_f_stmt;
     private $r_coda_stmt;
 
-    public function __construct($server, $database, $username, $password)
-    {
+    public function __construct($server, $database, $username, $password) {
 
         try {
             $this->conn = new PDO("mysql:host=$server;dbname=$database", $username, $password);
@@ -48,15 +55,43 @@ class Database
     }
 
 
-    public function getConnection()
-    {
+    public function getConnection() {
+
         return $this->conn;
     }
 
-    function uploadToDatabase($upload)
-    {
+    function uploadCbi($blob) {
 
-        $this->cbi_stmt->execute($upload);
+        $this->cbi_stmt->execute($blob);
     }
 
+    function uploadRecordTesta($blob) {
+
+        $this->r_testa_stmt->execute($blob);
+    }
+
+    function uploadSaldoIniziale($blob) {
+
+        $this->saldo_i_stmt->execute($blob);
+    }
+
+    function uploadRecordMovement($blob) {
+
+        $this->r_mov_stmt->execute($blob);
+    }
+
+    function uploadRecordMovementInfo($blob) {
+
+        $this->r_mov_info_stmt->execute($blob);
+    }
+
+    function uploadSaldoFinale($blob) {
+
+        $this->saldo_f_stmt->execute($blob);
+    }
+
+    function uploadRecordCoda($blob) {
+
+        $this->r_coda_stmt->execute($blob);
+    }
 }
