@@ -2,28 +2,30 @@
 
 namespace cbi\parse;
 
-use cbi\database\ConnectDatabase;
+use cbi\database\Database;
 use Exception;
 
 class Parser
 {
-    private $connection;
+    private $db;
 
-    function __construct($dbserver, $database, $user, $password, $filename)
+    function __construct($server, $database, $user, $password, $filename)
     {
         try {
-            $this->connection = (new ConnectDatabase($dbserver, $database, $user, $password))->getConnection();
+            $this->db = (new Database($server, $database, $user, $password, "INSERT INTO cbi (movements, dateOfMovement) VALUES (?, ?)"));
         } catch (Exception $e) {
         }
 
         $file = Cbi::fromFile($filename);
 
-        $stream = fopen('php://memory','r+');
-        fwrite($stream, $file);
-        rewind($stream);
+        $this->db->uploadToDatabase(array(serialize($file), "2019-05-27"));
 
-        var_dump($file);
-        printf("hello");
+
+        var_dump($file->__get("record")[4]->__get("tipoRecord"));
+
+        printf(var_dump($file->__get("_m_record")));
+
+
     }
 
 }
