@@ -83,7 +83,7 @@ class Database {
      * @param $type : The type of the document and record_testa(RH, EC, RA, etc.)
      * @return string: The index of the last inserted cbi record (the $blob)
      */
-    function uploadCbi($blob, $date, $type) {
+    public function uploadCbi($blob, $date, $type) {
 
         $date = substr(date("Y"), 0, 2) . substr($date, 4, 2)
             . "-" . substr($date, 2, 2) . "-" . substr($date, 0, 2);
@@ -117,15 +117,13 @@ class Database {
      * @param $infos : Information like movement transferred or the foreign keys
      * @return string : Returns the id of the last movement made
      */
-    function uploadRecord($blob, $date, $type, $infos) {
+    public function uploadRecord($blob, $date, $type, $infos) {
 
         $date = substr(date("Y"), 0, 2) . substr($date, 4, 2)
             . "-" . substr($date, 2, 2) . "-" . substr($date, 0, 2);
 
         switch ($type) {
             case 'RH':
-                $this->r_testa_stmt->execute(array(serialize($blob), $date, $infos[0]));
-                break;
             case 'EC':
                 $this->r_testa_stmt->execute(array(serialize($blob), $date, $infos[0]));
                 break;
@@ -134,7 +132,8 @@ class Database {
                 break;
             case '62':
                 $this->r_mov_stmt->execute(array(serialize($blob), $date, $infos[0], $infos[1]));
-                return $this->conn->lastInsertId();
+                $infos[2] = $this->conn->lastInsertId();
+                break;
             case '63':
                 $this->r_mov_info_stmt->execute(array(serialize($blob), $date, $infos[0], $infos[2]));
                 break;
@@ -151,5 +150,17 @@ class Database {
         }
         return $infos[2];
     }
+
+
+    public function queryMovements($cbi_id) {
+        $sql = "SELECT rm_record FROM record_movement WHERE rm_cbi = $cbi_id";
+        var_dump($sql);
+        foreach ($this->conn->query($sql) as $a) {
+            printf($a);
+        }
+
+        return 1;
+    }
+
 
 }

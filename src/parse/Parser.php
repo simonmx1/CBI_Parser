@@ -11,6 +11,7 @@
 
 namespace cbi\parse;
 
+use cbi\database\CompleteMovement;
 use cbi\database\Database;
 use Exception;
 
@@ -29,7 +30,7 @@ class Parser {
      * @param $password : The password to access the database
      * @param $filenames : Names of the files containing the CBI records
      */
-    function __construct($server, $database, $username, $password, $filenames) {
+    public function __construct($server, $database, $username, $password, $filenames) {
 
         try {
             $this->db = new Database($server, $database, $username, $password);
@@ -41,7 +42,9 @@ class Parser {
 
             $file = Cbi::fromFile($filenames[$i]);
 
-            $this->uploadToDB($file);
+            $cbi = $this->uploadToDB($file);
+
+            $this->uploadCompleteMovements($cbi);
 
         }
 
@@ -52,7 +55,7 @@ class Parser {
      *
      * @param $file : The CBI document
      */
-    function uploadToDB($file) {
+    private function uploadToDB($file) {
 
         //save date ro use for all the records
         $date = $file->record()[0]->content()->dataCreazione();
@@ -70,6 +73,13 @@ class Parser {
 
         }
         printf("Upload finished\n");
+        return $cbi_num;
+    }
+
+    private function uploadCompleteMovements($cbi) {
+        var_dump($this->db->queryMovements($cbi));
+        //$p = new CompleteMovement(2, 3);
+
     }
 
 }
