@@ -91,17 +91,17 @@ class Database {
         if ($type != "EC")
             $this->cbi_stmt->execute(array(serialize($blob), $date, $type));
         else {
-            var_dump($date);
-            var_dump($type);
-            //$blob = serialize($blob);
-            var_dump($blob);
-            $doc = fopen('/home/simon/Desktop/CBI/records/06045_06045E8330_'
-                . 'REND-EC_20190401_3714_p2_INFO.T190920238325.MOV.txt', 'rb');
-
+            if ($date == "2019-04-01")
+                $doc = fopen('/home/simon/Desktop/CBI/records/06045_06045E8330_'
+                    . 'REND-EC_20190401_3714_p2_INFO.T190920238325.MOV.txt', 'rb');
+            else
+                $doc = fopen('/home/simon/Desktop/CBI/records/06045_06045E8330'
+                    . '_REND-EC_20190502_2735_p2_INFO.T191230507243.MOV.txt', 'rb');
             $this->cbi_stmt->bindParam(1, $doc, PDO::PARAM_LOB);
             $this->cbi_stmt->bindParam(2, $date);
             $this->cbi_stmt->bindParam(3, $type);
             $this->cbi_stmt->execute();
+
         }
 
         return $this->conn->lastInsertId();

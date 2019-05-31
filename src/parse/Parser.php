@@ -27,22 +27,23 @@ class Parser {
      * @param $database : The database server name
      * @param $username : The username to access the database
      * @param $password : The password to access the database
-     * @param $filename : Name of the file containing the CBI records
+     * @param $filenames : Names of the files containing the CBI records
      */
-    function __construct($server, $database, $username, $password, $filename) {
+    function __construct($server, $database, $username, $password, $filenames) {
 
         try {
             $this->db = new Database($server, $database, $username, $password);
         } catch (Exception $e) {
         }
 
-        $file = Cbi::fromFile($filename);
+        //Parse all files
+        for ($i = 0; $i < sizeof($filenames); $i++) {
 
-        $s = sizeof($file->record()) - 2;
-        var_dump($file->record()[$s]->_root->_raw_record()[$s]);
+            $file = Cbi::fromFile($filenames[$i]);
 
-        $this->uploadToDB($file);
+            $this->uploadToDB($file);
 
+        }
 
     }
 
@@ -53,20 +54,22 @@ class Parser {
      */
     function uploadToDB($file) {
 
+        //save date ro use for all the records
         $date = $file->record()[0]->content()->dataCreazione();
-        $cbi_type = $file->record()[0]->tipoRecord();
 
-        $cbi_num = $this->db->uploadCbi($file, $date, $cbi_type);
+        //save whole CBI document to the database and get the index for the other records
+        $cbi_num = $this->db->uploadCbi($file, $date, $file->record()[0]->tipoRecord());
 
+        //infos are needed for some records
         $infos = array($cbi_num, true, 0);
-        for ($i = 0; $i < sizeof($file->record()); $i++) {
 
+        //read all the single records and insert them into the database
+        for ($i = 0; $i < sizeof($file->record()); $i++) {
             $infos[2] = $this->db->uploadRecord($file->record()[$i]->_root->_raw_record()[$i],
                 $date, $file->record()[$i]->tipoRecord(), $infos);
-            printf($i);
 
         }
-        printf("Upload finished");
+        printf("Upload finished\n");
     }
 
 }
