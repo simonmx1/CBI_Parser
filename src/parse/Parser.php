@@ -18,27 +18,55 @@ class Parser {
 
     private $db;
 
-    function __construct($server, $database, $user, $password, $filename) {
+    /**
+     * Parser constructor.
+     * The connection to the database is initiated and the file is passed on to the actual parsing class.
+     * Then the parsed document is passed on to prepare the upload.
+     *
+     * @param $server : The database server address
+     * @param $database : The database server name
+     * @param $username : The username to access the database
+     * @param $password : The password to access the database
+     * @param $filename : Name of the file containing the CBI records
+     */
+    function __construct($server, $database, $username, $password, $filename) {
 
         try {
-            $this->db = new Database($server, $database, $user, $password);
+            $this->db = new Database($server, $database, $username, $password);
         } catch (Exception $e) {
         }
 
         $file = Cbi::fromFile($filename);
 
-        ///$this->db->uploadCbi(array(serialize($file), "2019-05-27"));
+        $s = sizeof($file->record()) - 2;
+        var_dump($file->record()[$s]->_root->_raw_record()[$s]);
 
-        //var_dump($file);
-        var_dump($file->record()[4]->content()->saldoContabile());
-        var_dump($file->record()[4]->_root->_raw_record()[4]);
+        $this->uploadToDB($file);
 
-        //printf("mittente: " . $file->__get("record")[0]->__get("content")->__get("mittente") . "\n");
-        //printf("ricevente: " . $file->__get("record")[0]->__get("content")->__get("ricevente") . "\n");
-        //var_dump($file->__get("record")[12]->__get("content")->__get("numeroProgressivo") . "\n");
 
-        printf(var_dump($file->__get("_m_record")));
+    }
 
+    /**
+     * This function extracts the information needed, to upload a record to the database
+     *
+     * @param $file : The CBI document
+     */
+    function uploadToDB($file) {
+
+        $date = $file->record()[0]->content()->dataCreazione();
+        $cbi_type = $file->record()[0]->tipoRecord();
+
+        $cbi_num = $this->db->uploadCbi($file, $date, $cbi_type);
+
+        $infos = array($cbi_num, true, 0);
+        for ($i = 0; $i < sizeof($file->record()); $i++) {
+
+            $infos[2] = $this->db->uploadRecord($file->record()[$i]->_root->_raw_record()[$i],
+                $date, $file->record()[$i]->tipoRecord(), $infos);
+            printf($i);
+
+        }
+        printf("Upload finished");
     }
 
 }
