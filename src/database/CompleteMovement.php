@@ -74,28 +74,27 @@ class CompleteMovement {
         $des = substr($this->record62, 93, 34);
         for ($i = 0; $i < sizeof($this->record63s); $i++) {
             switch (substr($this->record63s[$i], 20, 3)) {
-                case "ZZ2":
-                    break;
-                case "ZZ3":
+                case "KKK":
                     break;
                 case "YYY":
                     $this->codFisOrd = substr($this->record63s[$i], 31, 16);
                     $this->clienteOrd = substr($this->record63s[$i], 47, 40);
                     $this->localita = substr($this->record63s[$i], 87, 40);
                     break;
-                case "RI2":
-                    break;
-                case "ID1":
-                    break;
-                case "ZZ1":
-                    break;
-                case "RI1":
-                    break;
                 case "YY2":
                     $this->indirizzoOrd = substr($this->record63s[$i], 23, 50);
                     $this->ibanOrd = substr($this->record63s[$i], 73, 34);
                     break;
-                case "KKK":
+                case "ZZ1":
+                case "ZZ2":
+                case "ZZ3":
+                    $des .= substr($this->record63s[$i], 23, 107);
+                    break;
+                case "RI1":
+                    break;
+                case "RI2":
+                    break;
+                case "ID1":
                     break;
                 default:
                     $des .= substr($this->record63s[$i], 20, 107);

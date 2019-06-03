@@ -67,10 +67,16 @@ class Parser {
         //infos are needed for some records
         $infos = array($cbi_num, true, 0);
 
+
+        /*  var_dump($file->record()[2]->content()->dataContabile());
+          $file->record()[$i]->content()->dataContabile()
+          > date("Y-m-d"), */
+
+
         //read all the single records and insert them into the database
         for ($i = 0; $i < sizeof($file->record()); $i++) {
-            $infos[2] = $this->db->uploadRecord($file->record()[$i]->_root->_raw_record()[$i],
-                $date, $file->record()[$i]->tipoRecord(), $infos);
+            $infos[2] = $this->db->uploadRecord($file->record()[$i]->_root->_raw_record()[$i], $date,
+                $file->record()[$i]->tipoRecord(), $infos);
 
         }
         printf("Upload finished\n");
