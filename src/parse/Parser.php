@@ -54,6 +54,7 @@ class Parser {
      * This function extracts the information needed, to upload a record to the database
      *
      * @param $file : The CBI document
+     * @return string : ID of the CBI document that has been uploaded
      */
     private function uploadToDB($file) {
 
@@ -76,9 +77,13 @@ class Parser {
         return $cbi_num;
     }
 
+    /**
+     * Upload the movement without
+     * @param $cbi : The CBI document the movement is part of
+     */
     private function uploadCompleteMovements($cbi) {
-        var_dump($this->db->queryMovements($cbi));
-        //$p = new CompleteMovement(2, 3);
+        $this->db->queryMovements($cbi);
+
 
     }
 

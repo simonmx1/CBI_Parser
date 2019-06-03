@@ -151,15 +151,32 @@ class Database {
         return $infos[2];
     }
 
-
+    /**
+     * This function is for fetching the movement records and their information and returning them in an array
+     *
+     * @param $cbi_id : The ID of the CBI document that the records are part of
+     * @return array with the movement records and infos
+     */
     public function queryMovements($cbi_id) {
-        $sql = "SELECT rm_record FROM record_movement WHERE rm_cbi = $cbi_id";
-        var_dump($sql);
-        foreach ($this->conn->query($sql) as $a) {
-            printf($a);
+
+        $sql62 = "SELECT rm_record, rm_id FROM record_movement WHERE rm_cbi = $cbi_id";
+
+        $ar = array();
+
+        foreach ($this->conn->query($sql62) as $a62) {
+
+            $sql63 = "SELECT rmi_record FROM record_movement_info WHERE rmi_cbi = $cbi_id AND rmi_movement = $a62[rm_id]";
+            $movInf = array();
+
+            foreach ($this->conn->query($sql63) as $a63) {
+
+                $movInf[] = $a63['rmi_record'];
+            }
+
+            $ar[] = array($a62['rm_record'], $movInf);
         }
 
-        return 1;
+        return $ar;
     }
 
 
