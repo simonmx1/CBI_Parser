@@ -42,7 +42,7 @@ class Parser {
 
             $file = Cbi::fromFile($filenames[$i]);
 
-            $cbi = $this->uploadToDB($file);
+            $cbi = $this->uploadToDB($file, fopen($filenames[$i], 'rb'));
 
             $this->uploadCompleteMovements($cbi);
 
@@ -54,14 +54,15 @@ class Parser {
      * This function extracts the information needed, to upload a record to the database
      *
      * @param $file : The CBI document
+     * @param $ofile : The same document, but different
      * @return string : ID of the CBI document that has been uploaded
      */
-    private function uploadToDB($file) {
+    private function uploadToDB($file, $ofile) {
 
         $date = $file->record()[0]->content()->dataCreazione();
 
         //save whole CBI document to the database and get the index for the other records
-        $cbi_num = $this->db->uploadCbi($file, $date, $file->record()[0]->tipoRecord());
+        $cbi_num = $this->db->uploadCbi($date, $file->record()[0]->tipoRecord(), $ofile);
 
         //infos are needed for some records
         $infos = array($cbi_num, true, 0);

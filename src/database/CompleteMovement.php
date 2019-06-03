@@ -106,6 +106,7 @@ class CompleteMovement {
         $this->des = $des;
     }
 
+    //Getters
 
     public function getDataValuta() {
 
