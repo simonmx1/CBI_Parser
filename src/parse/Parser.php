@@ -58,7 +58,6 @@ class Parser {
      */
     private function uploadToDB($file) {
 
-        //save date ro use for all the records
         $date = $file->record()[0]->content()->dataCreazione();
 
         //save whole CBI document to the database and get the index for the other records
@@ -82,9 +81,14 @@ class Parser {
      * @param $cbi : The CBI document the movement is part of
      */
     private function uploadCompleteMovements($cbi) {
-        $this->db->queryMovements($cbi);
 
+        $mov = $this->db->queryMovements($cbi);
+        for ($i = 0; $i < sizeof($mov); $i++) {
 
+            $cm = new CompleteMovement($mov[$i][0], $mov[$i][1]);
+            $this->db->uploadCompleteMovement($cm);
+
+        }
     }
 
 }

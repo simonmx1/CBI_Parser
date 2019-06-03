@@ -25,13 +25,14 @@ class Database {
     private $saldo_f_stmt;
     private $r_liq_fut_stmt;
     private $r_coda_stmt;
+    private $cm_stmt;
 
     /**
      * Database constructor.
-     * It builds the connection to the database and creates the statement for inserting hte records.
+     * It creates the connection to the database and prepares the statements to insert the records.
      *
      * @param $server : The database server address
-     * @param $database : The databse server name
+     * @param $database : The database server name
      * @param $username : The username to access the database
      * @param $password : The password to access the database
      */
@@ -60,6 +61,12 @@ class Database {
                 . "(rc_record, rc_date, rc_cbi) VALUES (?, ?, ?)");
             $this->r_liq_fut_stmt = $this->conn->prepare("INSERT INTO record_liquidita_future "
                 . "(rlf_record, rlf_date, rlf_cbi) VALUES (?, ?, ?)");
+
+            $this->cm_stmt = $this->conn->prepare("INSERT INTO `movimenti_completi` "
+                . "(mc_data_valuta, mc_data_contabile, mc_segno, mc_importo, "
+                . "mc_riferimento_banca, mc_tipo_riferimento_cliente, mc_descrizione_movimento, "
+                . "mc_codice_fiscale_ordinante, mc_cliente_ordinante, mc_localita, "
+                . "mc_indirizzo_ordinante, mc_IBAN_ordinante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         } catch (PDOException $e) {
             printf($e);
@@ -119,8 +126,7 @@ class Database {
      */
     public function uploadRecord($blob, $date, $type, $infos) {
 
-        $date = substr(date("Y"), 0, 2) . substr($date, 4, 2)
-            . "-" . substr($date, 2, 2) . "-" . substr($date, 0, 2);
+        $date = self::convertDate($date);
 
         switch ($type) {
             case 'RH':
@@ -179,5 +185,27 @@ class Database {
         return $ar;
     }
 
+    /**
+     * This function uploads the movemetn with only needed information
+     * @param CompleteMovement $cm : The whole movement as Object
+     */
+    public function uploadCompleteMovement(CompleteMovement $cm) {
+
+        $this->cm_stmt->execute(array($cm->getDataValuta(), $cm->getDataContabile(), $cm->getISegno(),
+            $cm->getImporto(), $cm->getRifBanca(), $cm->getTipoRifBanca(), $cm->getDes(), $cm->getCodFisOrd(),
+            $cm->getCodFisOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(), $cm->getIbanOrd()));
+    }
+
+    /**
+     * Converting the dates from DDMMYY to YYYY-MM-DD
+     *
+     * @param $date : The date DDMMYY
+     * @return string : The date YYYY-MM-DD
+     */
+    public static function convertDate($date) {
+
+        return substr(date("Y"), 0, 2) . substr($date, 4, 2)
+            . "-" . substr($date, 2, 2) . "-" . substr($date, 0, 2);
+    }
 
 }
