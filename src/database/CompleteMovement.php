@@ -39,7 +39,7 @@ class CompleteMovement {
 
         $this->dataContabile = Database::convertDate(substr($this->record62, 26, 6));
 
-        //$this->completato = strcmp($this->dataContabile, Date("Y-M-D"));
+        $this->completato = Date("Y-m-d") >= $this->dataContabile;
 
         $this->iSegno = substr($this->record62, 32, 1);
 
