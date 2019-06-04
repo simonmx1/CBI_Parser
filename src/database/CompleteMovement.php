@@ -3,7 +3,6 @@
 
 namespace cbi\database;
 
-
 class CompleteMovement {
 
     private $record62;
@@ -21,50 +20,32 @@ class CompleteMovement {
     private $localita;
     private $indirizzoOrd;
     private $ibanOrd;
+    private $estero;
+    private $completato;
 
     public function __construct($record62, $record63s) {
 
         $this->record62 = $record62;
         $this->record63s = $record63s;
 
-        $this->setDataValuta();
-        $this->setDataContabile();
-        $this->setISegno();
-        $this->setImporto();
-        $this->setRifBanca();
-        $this->setTipoRifCliente();
+        $this->set62();
         $this->set63();
 
-        //var_dump($this->ibanOrd);
-
     }
 
-    private function setDataValuta() {
+    private function set62() {
 
         $this->dataValuta = Database::convertDate(substr($this->record62, 20, 6));
-    }
-
-    private function setDataContabile() {
 
         $this->dataContabile = Database::convertDate(substr($this->record62, 26, 6));
-    }
 
-    private function setISegno() {
+        //$this->completato = strcmp($this->dataContabile, Date("Y-M-D"));
 
         $this->iSegno = substr($this->record62, 32, 1);
-    }
-
-    private function setImporto() {
 
         $this->importo = floatval(str_replace(',', '.', substr($this->record62, 33, 15)));
-    }
-
-    private function setRifBanca() {
 
         $this->rifBanca = substr($this->record62, 68, 16);
-    }
-
-    private function setTipoRifCliente() {
 
         $this->tipoRifBanca = substr($this->record62, 84, 9);
     }
@@ -84,10 +65,15 @@ class CompleteMovement {
                 case "YY2":
                     $this->indirizzoOrd = substr($this->record63s[$i], 23, 50);
                     $this->ibanOrd = substr($this->record63s[$i], 73, 34);
+                    if (substr($this->ibanOrd, 0, 2) == "IT")
+                        $this->estero = false;
+                    else
+                        $this->estero = true;
                     break;
                 case "ZZ1":
                 case "ZZ2":
                 case "ZZ3":
+                    $this->estero = true;
                     $des .= substr($this->record63s[$i], 23, 107);
                     break;
                 case "RI1":
@@ -165,6 +151,16 @@ class CompleteMovement {
     public function getIbanOrd() {
 
         return $this->ibanOrd;
+    }
+
+    public function getEstero() {
+
+        return $this->estero;
+    }
+
+    public function getCompletato() {
+
+        return $this->completato;
     }
 
 }

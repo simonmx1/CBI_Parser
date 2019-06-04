@@ -66,7 +66,8 @@ class Database {
                 . "(mc_data_valuta, mc_data_contabile, mc_segno, mc_importo, "
                 . "mc_riferimento_banca, mc_tipo_riferimento_cliente, mc_descrizione_movimento, "
                 . "mc_codice_fiscale_ordinante, mc_cliente_ordinante, mc_localita, "
-                . "mc_indirizzo_ordinante, mc_IBAN_ordinante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                . "mc_indirizzo_ordinante, mc_IBAN_ordinante, mc_estero, mc_completato) "
+                . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         } catch (PDOException $e) {
             printf($e);
@@ -184,7 +185,7 @@ class Database {
 
         $this->cm_stmt->execute(array($cm->getDataValuta(), $cm->getDataContabile(), $cm->getISegno(),
             $cm->getImporto(), $cm->getRifBanca(), $cm->getTipoRifBanca(), $cm->getDes(), $cm->getCodFisOrd(),
-            $cm->getCodFisOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(), $cm->getIbanOrd()));
+            $cm->getCodFisOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(), $cm->getIbanOrd(), $cm->getEstero(), $cm->getCompletato()));
     }
 
     /**

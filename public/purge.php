@@ -5,7 +5,7 @@
  *
  * Connects to database and DELETES everything
  *
- * @package    src/database
+ * @package    public
  * @author     Simon Muscatello
  */
 
@@ -15,4 +15,4 @@ $c->query("SET NAMES utf8");
 $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 printf($c->exec("DELETE FROM movimenti_completi") . " complete movements deleted\n");
-printf($c->exec("DELETE FROM cbi") . " cbi documents deleted\n");
+printf($c->exec("DELETE FROM cbi") . " cbi documents deleted (and all their records)\n");

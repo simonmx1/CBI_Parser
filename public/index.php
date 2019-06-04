@@ -25,5 +25,4 @@ $password = '';
 
 $files = glob("/home/simon/Desktop/CBI/records/TXT/*.txt");
 
-//start program
 new Parser($server, $database, $user, $password, $files);
