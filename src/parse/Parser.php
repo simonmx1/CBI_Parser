@@ -37,7 +37,7 @@ class Parser {
         } catch (Exception $e) {
         }
 
-        //Parse all files
+        //Parse all files and upload them to the database
         for ($i = 0; $i < sizeof($filenames); $i++) {
 
             $file = Cbi::fromFile($filenames[$i]);
@@ -67,17 +67,14 @@ class Parser {
         //infos are needed for some records
         $infos = array($cbi_num, true, 0);
 
-        /*  var_dump($file->record()[2]->content()->dataContabile());
-          $file->record()[$i]->content()->dataContabile()
-          > date("Y-m-d"), */
-
         //read all the single records and insert them into the database
         for ($i = 0; $i < sizeof($file->record()); $i++) {
             $infos[2] = $this->db->uploadRecord($file->record()[$i]->_root->_raw_record()[$i], $date,
                 $file->record()[$i]->tipoRecord(), $infos);
 
         }
-        printf("Upload finished\n");
+
+        printf($cbi_num . ": Upload finished\n");
         return $cbi_num;
     }
 
@@ -88,10 +85,10 @@ class Parser {
     private function uploadCompleteMovements($cbi) {
 
         $mov = $this->db->queryMovements($cbi);
-        $banca = $mov[0];
+
         for ($i = 1; $i < sizeof($mov); $i++) {
 
-            $cm = new CompleteMovement($mov[$i][0], $mov[$i][1], $banca);
+            $cm = new CompleteMovement($mov[$i][0], $mov[$i][1], $mov[0]);
             $this->db->uploadCompleteMovement($cm);
 
         }

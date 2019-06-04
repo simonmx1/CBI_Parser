@@ -62,6 +62,7 @@ class Database {
             $this->r_liq_fut_stmt = $this->conn->prepare("INSERT INTO record_liquidita_future "
                 . "(rlf_record, rlf_date, rlf_cbi) VALUES (?, ?, ?)");
 
+            //INSERT-statement for the whole movement in one table
             $this->cm_stmt = $this->conn->prepare("INSERT INTO `movimenti_completi` "
                 . "(mc_data_valuta, mc_data_contabile, mc_segno, mc_importo, "
                 . "mc_riferimento_banca, mc_tipo_riferimento_cliente, mc_descrizione_movimento, "
@@ -93,15 +94,10 @@ class Database {
      */
     public function uploadCbi($date, $type, $ofile) {
 
-        $date = substr(date("Y"), 0, 2) . substr($date, 4, 2)
-            . "-" . substr($date, 2, 2) . "-" . substr($date, 0, 2);
-
-
         $this->cbi_stmt->bindParam(1, $ofile, PDO::PARAM_LOB);
-        $this->cbi_stmt->bindParam(2, $date);
+        $this->cbi_stmt->bindParam(2, self::convertDate($date));
         $this->cbi_stmt->bindParam(3, $type);
         $this->cbi_stmt->execute();
-
 
         return $this->conn->lastInsertId();
     }
@@ -161,15 +157,18 @@ class Database {
         $sqlSI = "SELECT rsi_record FROM record_saldo_iniziale WHERE rsi_cbi = $cbi_id";
         $ar = array();
 
+        //this is needed for the bank information
         foreach ($this->conn->query($sqlSI) as $aSI) {
             $ar[] = $aSI['rsi_record'];
         }
 
+        //get the movements + information
         foreach ($this->conn->query($sql62) as $a62) {
 
             $sql63 = "SELECT rmi_record FROM record_movement_info WHERE rmi_cbi = $cbi_id AND rmi_movement = $a62[rm_id]";
             $movInf = array();
 
+            //get movement information of each movement
             foreach ($this->conn->query($sql63) as $a63) {
 
                 $movInf[] = $a63['rmi_record'];
@@ -178,12 +177,11 @@ class Database {
             $ar[] = array($a62['rm_record'], $movInf);
         }
 
-
         return $ar;
     }
 
     /**
-     * This function uploads the movemetn with only needed information
+     * This function uploads the movement with only needed information
      * @param CompleteMovement $cm : The whole movement as Object
      */
     public function uploadCompleteMovement(CompleteMovement $cm) {

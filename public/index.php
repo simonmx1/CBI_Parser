@@ -21,8 +21,6 @@ $database = 'cbi_movements';
 $user = 'root';
 $password = '';
 
-//$files = array("/home/simon/Desktop/test.txt");
-
 $files = glob("/home/simon/Desktop/CBI/records/TXT/*.txt");
 
 new Parser($server, $database, $user, $password, $files);

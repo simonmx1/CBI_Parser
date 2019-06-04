@@ -1,7 +1,13 @@
 <?php
 
-
 namespace cbi\database;
+
+/**
+ * Class CompleteMovement
+ *
+ * @package cbi\database
+ * @author Simon Muscatello
+ */
 
 class CompleteMovement {
 
@@ -24,6 +30,14 @@ class CompleteMovement {
     private $completato;
     private $bancaCliente;
 
+    /**
+     * CompleteMovement constructor.
+     * Takes the necessary information from the records and builds an object for further use.
+     *
+     * @param $record62 : movement record
+     * @param $record63s : movement info record
+     * @param $banca : bank information
+     */
     public function __construct($record62, $record63s, $banca) {
 
         $this->record62 = $record62;
@@ -35,11 +49,18 @@ class CompleteMovement {
 
     }
 
+    /**
+     * This function takes the bank information from the head record
+     * @param $banca : the head record as string
+     */
     private function setBank($banca) {
 
         $this->bancaCliente = substr($banca, 58, 23);
     }
 
+    /**
+     * This function tales the necessary information from the 62-record
+     */
     private function set62() {
 
         $this->dataValuta = Database::convertDate(substr($this->record62, 20, 6));
@@ -57,6 +78,9 @@ class CompleteMovement {
         $this->tipoRifBanca = substr($this->record62, 84, 9);
     }
 
+    /**
+     * This function takes the necessary information from the 63-records
+     */
     private function set63() {
 
         $des = substr($this->record62, 93, 34);
