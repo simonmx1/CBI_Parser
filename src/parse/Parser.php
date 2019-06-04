@@ -88,9 +88,10 @@ class Parser {
     private function uploadCompleteMovements($cbi) {
 
         $mov = $this->db->queryMovements($cbi);
-        for ($i = 0; $i < sizeof($mov); $i++) {
+        $banca = $mov[0];
+        for ($i = 1; $i < sizeof($mov); $i++) {
 
-            $cm = new CompleteMovement($mov[$i][0], $mov[$i][1]);
+            $cm = new CompleteMovement($mov[$i][0], $mov[$i][1], $banca);
             $this->db->uploadCompleteMovement($cm);
 
         }

@@ -66,11 +66,11 @@ class Database {
                 . "(mc_data_valuta, mc_data_contabile, mc_segno, mc_importo, "
                 . "mc_riferimento_banca, mc_tipo_riferimento_cliente, mc_descrizione_movimento, "
                 . "mc_codice_fiscale_ordinante, mc_cliente_ordinante, mc_localita, "
-                . "mc_indirizzo_ordinante, mc_IBAN_ordinante, mc_estero, mc_completato) "
-                . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                . "mc_indirizzo_ordinante, mc_IBAN_ordinante, mc_estero, mc_completato, mc_banca) "
+                . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         } catch (PDOException $e) {
-            printf($e);
+            printf("A database error occurred: " . $e);
         }
 
     }
@@ -87,7 +87,7 @@ class Database {
      * This function uploads the whole CBI Document to the Database and returns it's index.
      *
      * @param $date : The creation date of the document
-     * @param $type : The type of the document and record_testa(RH, EC, RA, etc.)
+     * @param $type : The type of the document and record_testa (RH, EC, RA, etc.)
      * @param $ofile : The file to upload
      * @return string: The index of the last inserted cbi record (the $blob)
      */
@@ -158,8 +158,12 @@ class Database {
     public function queryMovements($cbi_id) {
 
         $sql62 = "SELECT rm_record, rm_id FROM record_movement WHERE rm_cbi = $cbi_id";
-
+        $sqlSI = "SELECT rsi_record FROM record_saldo_iniziale WHERE rsi_cbi = $cbi_id";
         $ar = array();
+
+        foreach ($this->conn->query($sqlSI) as $aSI) {
+            $ar[] = $aSI['rsi_record'];
+        }
 
         foreach ($this->conn->query($sql62) as $a62) {
 
@@ -174,6 +178,7 @@ class Database {
             $ar[] = array($a62['rm_record'], $movInf);
         }
 
+
         return $ar;
     }
 
@@ -184,8 +189,9 @@ class Database {
     public function uploadCompleteMovement(CompleteMovement $cm) {
 
         $this->cm_stmt->execute(array($cm->getDataValuta(), $cm->getDataContabile(), $cm->getISegno(),
-            $cm->getImporto(), $cm->getRifBanca(), $cm->getTipoRifBanca(), $cm->getDes(), $cm->getCodFisOrd(),
-            $cm->getCodFisOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(), $cm->getIbanOrd(), $cm->getEstero(), $cm->getCompletato()));
+            $cm->getImporto(), $cm->getRifBanca(), $cm->getTipoRifBanca(), $cm->getDes(),
+            $cm->getCodFisOrd(), $cm->getClienteOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(),
+            $cm->getIbanOrd(), $cm->getEstero(), $cm->getCompletato(), $cm->getBancaCliente()));
     }
 
     /**

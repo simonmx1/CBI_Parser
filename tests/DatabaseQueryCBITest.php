@@ -2,8 +2,8 @@
 
 namespace cbitest;
 
-use \cbi\database\Database;
-use \cbi\parse\Parser;
+use cbi\database\Database;
+use cbi\parse\Parser;
 use PHPUnit\Framework\TestCase;
 
 class DatabaseQueryCBITest extends TestCase {

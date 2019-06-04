@@ -22,15 +22,22 @@ class CompleteMovement {
     private $ibanOrd;
     private $estero;
     private $completato;
+    private $bancaCliente;
 
-    public function __construct($record62, $record63s) {
+    public function __construct($record62, $record63s, $banca) {
 
         $this->record62 = $record62;
         $this->record63s = $record63s;
 
+        $this->setBank($banca);
         $this->set62();
         $this->set63();
 
+    }
+
+    private function setBank($banca) {
+
+        $this->bancaCliente = substr($banca, 58, 23);
     }
 
     private function set62() {
@@ -163,4 +170,8 @@ class CompleteMovement {
         return $this->completato;
     }
 
+    public function getBancaCliente() {
+
+        return $this->bancaCliente;
+    }
 }
