@@ -24,16 +24,13 @@ class Parser {
      * The connection to the database is initiated and the file is passed on to the actual parsing class.
      * Then the parsed document is passed on to prepare the upload.
      *
-     * @param $server : The database server address
-     * @param $database : The database server name
-     * @param $username : The username to access the database
-     * @param $password : The password to access the database
+     * @param $database : Contains all the information for the database connection
      * @param $filenames : Names of the files containing the CBI records
      */
-    public function __construct($server, $database, $username, $password, $filenames) {
+    public function __construct($database, $filenames) {
 
         try {
-            $this->db = new Database($server, $database, $username, $password);
+            $this->db = new Database($database['server'], $database['database'], $database['username'], $database['password']);
         } catch (Exception $e) {
         }
 

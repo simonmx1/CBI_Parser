@@ -11,6 +11,8 @@
 
 namespace cbi\database;
 
+use cbi\payment\CompletePayment;
+use cbi\payment\CompleteSCT;
 use PDO;
 use PDOException;
 
@@ -26,6 +28,8 @@ class Database {
     private $r_liq_fut_stmt;
     private $r_coda_stmt;
     private $cm_stmt;
+    private $cp_stmt;
+    private $sct_stmt;
 
     /**
      * Database constructor.
@@ -70,6 +74,20 @@ class Database {
                 . "mc_indirizzo_ordinante, mc_IBAN_ordinante, mc_estero, mc_completato, mc_banca) "
                 . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+            //INSERT-statement for a payment
+            $this->cp_stmt = $this->conn->prepare("INSERT INTO `pagamenti_completi` "
+                . "(p_SIA_mittente, p_ABI_ricevente, p_ABI_banca_dom, p_data_creazione, p_nome_supporto, "
+                . "p_codice_divisa, p_data_esecuzione, p_data_scadenza, p_importo, p_CAB_banca, p_codice_conto, "
+                . "p_CAB_banca_dom, p_codice_azienda, p_denominazione_azienda, p_indirizzo, p_codifica_fiscale, "
+                . "p_localita, p_cliente_creditore, p_numero_avviso, p_tipo_effetto, p_flag_vista, p_tipo_caricamento, "
+                . "p_chiavi_controllo, p_codiceCUC, p_debitore_IBAN, p_creditore_IBAN, p_doc_id) "
+                . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            $this->sct_stmt = $this->conn->prepare("INSERT INTO pagamenti_SCT "
+                . "(p_IBAN_deb, p_IBAN_cre, p_importo, p_data_creazione, p_data_esecuzione, p_codiceCUC, p_nome_azienda_deb, "
+                . "p_nome_azienda_cre, p_codifica_fiscale_deb, p_codifica_fiscale_cre, p_messaggio, p_dist_id) "
+                . " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
         } catch (PDOException $e) {
             printf("A database error occurred: " . $e);
         }
@@ -94,8 +112,9 @@ class Database {
      */
     public function uploadCbi($date, $type, $ofile) {
 
+        $date = self::convertDate($date);
         $this->cbi_stmt->bindParam(1, $ofile, PDO::PARAM_LOB);
-        $this->cbi_stmt->bindParam(2, self::convertDate($date));
+        $this->cbi_stmt->bindParam(2, $date);
         $this->cbi_stmt->bindParam(3, $type);
         $this->cbi_stmt->execute();
 
@@ -146,6 +165,18 @@ class Database {
     }
 
     /**
+     * This function uploads the movement with only needed information
+     * @param CompleteMovement $cm : The whole movement as Object
+     */
+    public function uploadCompleteMovement(CompleteMovement $cm) {
+
+        $this->cm_stmt->execute(array($cm->getDataValuta(), $cm->getDataContabile(), $cm->getISegno(),
+            $cm->getImporto(), $cm->getRifBanca(), $cm->getTipoRifBanca(), $cm->getDes(),
+            $cm->getCodFisOrd(), $cm->getClienteOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(),
+            $cm->getIbanOrd(), $cm->getEstero(), $cm->getCompletato(), $cm->getBancaCliente()));
+    }
+
+    /**
      * This function is for fetching the movement records and their information and returning them in an array
      *
      * @param $cbi_id : The ID of the CBI document that the records are part of
@@ -180,21 +211,105 @@ class Database {
         return $ar;
     }
 
-    /**
-     * This function uploads the movement with only needed information
-     * @param CompleteMovement $cm : The whole movement as Object
-     */
-    public function uploadCompleteMovement(CompleteMovement $cm) {
+    public static $pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164;
 
-        $this->cm_stmt->execute(array($cm->getDataValuta(), $cm->getDataContabile(), $cm->getISegno(),
-            $cm->getImporto(), $cm->getRifBanca(), $cm->getTipoRifBanca(), $cm->getDes(),
-            $cm->getCodFisOrd(), $cm->getClienteOrd(), $cm->getLocalita(), $cm->getIndirizzoOrd(),
-            $cm->getIbanOrd(), $cm->getEstero(), $cm->getCompletato(), $cm->getBancaCliente()));
+    /**
+     * This function uploads the payment with only needed information
+     * @param CompletePayment $cp : The whole payment as Object
+     * @param $doc_id : ID of the document it is part of
+     * @deprecated use uploadCompleteSCT() instead
+     */
+    public function uploadCompletePayment(CompletePayment $cp, $doc_id) {
+
+        $this->cp_stmt->execute(array($cp->getSIAMittente(), $cp->getABIRicevente(), $cp->getABIBancaDom(),
+            $cp->getDataCreazione(), $cp->getNomeSupporto(), $cp->getCodiceDivisa(), $cp->getDataEsec(),
+            $cp->getDataScad(), $cp->getImporto(), $cp->getCABBanca(), $cp->getCodiceConto(), $cp->getCABBancaDom(),
+            $cp->getCodiceAzienda(), $cp->getDenominazioneAzienda(), $cp->getIndirizzo(), $cp->getCodificaFiscale(),
+            $cp->getLocalita(), $cp->getClienteCreditore(), $cp->getNumeroAvviso(), $cp->getTipoEffetto(),
+            $cp->getFlagVista(), $cp->getTipoCaricamento(), $cp->getChiaviControllo(), $cp->getCodiceCUC(),
+            $cp->getDebiIBAN(), $cp->getCredIBAN(), $doc_id));
+    }
+
+    /**
+     * This function uploads the payment with only needed information
+     * @param CompleteSCT $cs : The complete payment as an object
+     * @param $dist_id : ID of the document it is part of
+     */
+    public function uploadCompleteSCT(CompleteSCT $cs, $dist_id) {
+
+        $this->sct_stmt->execute(array($cs->getDebIBAN(), $cs->getCreIBAN(), $cs->getImporto(), $cs->getDataCrea(),
+            $cs->getDataEsec(), $cs->getCodiceCUC(), $cs->getAziendaDeb(), $cs->getAziendaCre(),
+            $cs->getCodificaFiscaleDeb(), $cs->getCodificaFiscaleCre(), $cs->getMessaggio(), $dist_id));
+    }
+
+    /**
+     * This function is for fetching a payment
+     * @param $csid : ID of the  payment to query
+     * @return array|null : The payment as array
+     */
+    public function querySCT($csid) {
+
+        $sql = "SELECT * FROM pagamenti_SCT WHERE p_id = $csid";
+
+        foreach ($this->conn->query($sql) as $p)
+            return $p;
+
+        return null;
+    }
+
+    /**
+     * This function is for fetching a payment
+     * @param $cpid : ID of the payment to query
+     * @return array|null : The payment as array
+     * @deprecated use querySCT() instead
+     */
+    public function queryPayment($cpid) {
+
+        $sql = "SELECT * FROM pagamenti_completi WHERE p_id = $cpid";
+
+        foreach ($this->conn->query($sql) as $p)
+            return $p;
+
+        return null;
+    }
+
+    /**
+     * This function is for fetching all the p_ids that have the right dist_id.
+     * @param $dist_id : the dist_id to search for
+     * @return array : the p_ids
+     */
+    public function querySCTIDs($dist_id) {
+
+        $sql = "SELECT p_id FROM pagamenti_SCT WHERE p_dist_id = $dist_id";
+
+        $ids = array();
+
+        foreach ($this->conn->query($sql) as $id)
+            $ids[] = $id;
+
+        return $ids;
+    }
+
+    /**
+     * This function is for fetching all the p_ids that have the right doc_id.
+     * @param $doc_id : the doc_id to search for
+     * @return array : the p_ids
+     * @deprecated use querySCTIDs() instead
+     */
+    public function queryCPIDs($doc_id): array {
+
+        $sql = "SELECT p_id FROM pagamenti_completi WHERE p_doc_id = $doc_id";
+
+        $ids = array();
+
+        foreach ($this->conn->query($sql) as $id)
+            $ids[] = $id;
+
+        return $ids;
     }
 
     /**
      * Converting the dates from DDMMYY to YYYY-MM-DD
-     *
      * @param $date : The date DDMMYY
      * @return string : The date YYYY-MM-DD
      */

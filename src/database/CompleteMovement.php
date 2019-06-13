@@ -1,13 +1,14 @@
 <?php
 
-namespace cbi\database;
-
 /**
  * Class CompleteMovement
+ * The necessary information of a Movement can be stored in this object.
  *
  * @package cbi\database
  * @author Simon Muscatello
  */
+
+namespace cbi\database;
 
 class CompleteMovement {
 
@@ -59,7 +60,7 @@ class CompleteMovement {
     }
 
     /**
-     * This function tales the necessary information from the 62-record
+     * This function takes the necessary information from the 62-record
      */
     private function set62() {
 
