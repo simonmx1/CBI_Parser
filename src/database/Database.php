@@ -11,7 +11,6 @@
 
 namespace cbi\database;
 
-use cbi\payment\CompletePayment;
 use cbi\payment\CompleteSCT;
 use PDO;
 use PDOException;
@@ -28,7 +27,6 @@ class Database {
     private $r_liq_fut_stmt;
     private $r_coda_stmt;
     private $cm_stmt;
-    private $cp_stmt;
     private $sct_stmt;
 
     /**
@@ -75,14 +73,6 @@ class Database {
                 . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             //INSERT-statement for a payment
-            $this->cp_stmt = $this->conn->prepare("INSERT INTO `pagamenti_completi` "
-                . "(p_SIA_mittente, p_ABI_ricevente, p_ABI_banca_dom, p_data_creazione, p_nome_supporto, "
-                . "p_codice_divisa, p_data_esecuzione, p_data_scadenza, p_importo, p_CAB_banca, p_codice_conto, "
-                . "p_CAB_banca_dom, p_codice_azienda, p_denominazione_azienda, p_indirizzo, p_codifica_fiscale, "
-                . "p_localita, p_cliente_creditore, p_numero_avviso, p_tipo_effetto, p_flag_vista, p_tipo_caricamento, "
-                . "p_chiavi_controllo, p_codiceCUC, p_debitore_IBAN, p_creditore_IBAN, p_doc_id) "
-                . "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
             $this->sct_stmt = $this->conn->prepare("INSERT INTO pagamenti_SCT "
                 . "(p_IBAN_deb, p_IBAN_cre, p_importo, p_data_creazione, p_data_esecuzione, p_codiceCUC, p_nome_azienda_deb, "
                 . "p_nome_azienda_cre, p_codifica_fiscale_deb, p_codifica_fiscale_cre, p_messaggio, p_dist_id) "
@@ -215,23 +205,6 @@ class Database {
 
     /**
      * This function uploads the payment with only needed information
-     * @param CompletePayment $cp : The whole payment as Object
-     * @param $doc_id : ID of the document it is part of
-     * @deprecated use uploadCompleteSCT() instead
-     */
-    public function uploadCompletePayment(CompletePayment $cp, $doc_id) {
-
-        $this->cp_stmt->execute(array($cp->getSIAMittente(), $cp->getABIRicevente(), $cp->getABIBancaDom(),
-            $cp->getDataCreazione(), $cp->getNomeSupporto(), $cp->getCodiceDivisa(), $cp->getDataEsec(),
-            $cp->getDataScad(), $cp->getImporto(), $cp->getCABBanca(), $cp->getCodiceConto(), $cp->getCABBancaDom(),
-            $cp->getCodiceAzienda(), $cp->getDenominazioneAzienda(), $cp->getIndirizzo(), $cp->getCodificaFiscale(),
-            $cp->getLocalita(), $cp->getClienteCreditore(), $cp->getNumeroAvviso(), $cp->getTipoEffetto(),
-            $cp->getFlagVista(), $cp->getTipoCaricamento(), $cp->getChiaviControllo(), $cp->getCodiceCUC(),
-            $cp->getDebiIBAN(), $cp->getCredIBAN(), $doc_id));
-    }
-
-    /**
-     * This function uploads the payment with only needed information
      * @param CompleteSCT $cs : The complete payment as an object
      * @param $dist_id : ID of the document it is part of
      */
@@ -258,22 +231,6 @@ class Database {
     }
 
     /**
-     * This function is for fetching a payment
-     * @param $cpid : ID of the payment to query
-     * @return array|null : The payment as array
-     * @deprecated use querySCT() instead
-     */
-    public function queryPayment($cpid) {
-
-        $sql = "SELECT * FROM pagamenti_completi WHERE p_id = $cpid";
-
-        foreach ($this->conn->query($sql) as $p)
-            return $p;
-
-        return null;
-    }
-
-    /**
      * This function is for fetching all the p_ids that have the right dist_id.
      * @param $dist_id : the dist_id to search for
      * @return array : the p_ids
@@ -281,24 +238,6 @@ class Database {
     public function querySCTIDs($dist_id) {
 
         $sql = "SELECT p_id FROM pagamenti_SCT WHERE p_dist_id = $dist_id";
-
-        $ids = array();
-
-        foreach ($this->conn->query($sql) as $id)
-            $ids[] = $id;
-
-        return $ids;
-    }
-
-    /**
-     * This function is for fetching all the p_ids that have the right doc_id.
-     * @param $doc_id : the doc_id to search for
-     * @return array : the p_ids
-     * @deprecated use querySCTIDs() instead
-     */
-    public function queryCPIDs($doc_id): array {
-
-        $sql = "SELECT p_id FROM pagamenti_completi WHERE p_doc_id = $doc_id";
 
         $ids = array();
 
